@@ -26,7 +26,9 @@ var paramInterpolate = function ( str, obj ) {
 var versionEndpointTest = function ( opts ) {
 
   nock( opts.nockRoot )
-    .filteringPath( /api-key=[^&]*/g, 'api-key=test' )
+    .filteringPath( function () {
+      return opts.nockPath;
+    })
     .get( opts.nockPath )
     .reply( 200, {
       results: [{ versions:
@@ -77,6 +79,6 @@ var versionEndpointTest = function ( opts ) {
 
 versionEndpointTest({
   nockRoot: 'https://congress.api.sunlightfoundation.com',
-  nockPath: '/bills/?bill_id=hr2397-113&fields=versions&apikey=test&bill_id=hr2397-113&fields=versions',
+  nockPath: '/bills/',
   appPath: '/bills/:id/versions'
 });
