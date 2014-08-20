@@ -10,7 +10,8 @@ var cors = require( 'cors' );
 
 var api = {
   bills: require( '../routes/bills' ),
-  congress: require( '../routes/congress' )
+  congress: require( '../routes/congress' ),
+  votes: require( '../routes/votes' )
 };
 
 var app = express();

@@ -28,12 +28,15 @@ if ( redisConfig.port && redisConfig.url && redisConfig.key ) {
 }
 
 var cacheInterceptor = function ( req, fallback ) {
+  var path = interpolateParams( req.path, req.params );
 
   if ( !client || req.query.force ) {
-    return fallback( req ); // returns promise
+    return fallback( req ).then( function( response ) {
+      set( path, response );
+      return response;
+    });
   }
 
-  var path = interpolateParams( req.path, req.params );
 
   return tryCache( path )
     // found in cache
