@@ -42,10 +42,10 @@ var cacheInterceptor = function ( req, fallback ) {
     });
   }
 
-
   return tryCache( path )
     // found in cache
     .then( function ( response ) {
+      response = typeof response === 'string' ? JSON.parse( response ) : response;
       return response;
     })
     // not in cache
