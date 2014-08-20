@@ -109,8 +109,6 @@ module.exports = function( req ) {
       return acc;
     }, {} );
 
-    console.log( voteMonths );
-
     return Promise.all( Object.keys( voteMonths ).map( function ( yearMonth ) {
       var year = yearMonth.split( '-' )[0];
       var month = yearMonth.split( '-' )[1];

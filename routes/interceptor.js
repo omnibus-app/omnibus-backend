@@ -27,13 +27,21 @@ if ( redisConfig.port && redisConfig.url && redisConfig.key ) {
   });
 }
 
+function saveToCache ( key, value ) {
+  var str = typeof value === 'string' ? value : JSON.stringify( value );
+  set( key, str );
+  return value;
+}
+
 var cacheInterceptor = function ( req, fallback ) {
+  var path = interpolateParams( req.path, req.params );
 
   if ( !client || req.query.force ) {
-    return fallback( req ); // returns promise
+    return fallback( req ).then( function( response ) {
+      return saveToCache( path, response );
+    });
   }
 
-  var path = interpolateParams( req.path, req.params );
 
   return tryCache( path )
     // found in cache
@@ -43,8 +51,7 @@ var cacheInterceptor = function ( req, fallback ) {
     // not in cache
     .catch( function () {
       return fallback( req ).then( function ( response ) {
-        set( path, response );
-        return response;
+        return saveToCache( path, response );
       });
     });
 };

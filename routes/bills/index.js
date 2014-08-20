@@ -45,7 +45,7 @@ router.get( '/:id/subjects', function ( req, res ) {
 });
 
 router.get( '/:id/votes', function ( req, res ) {
-  votes( req ).then( function ( data ) {
+  cacheInterceptor( req, votes ).then( function ( data ) {
     res.json( data );
   });
 
