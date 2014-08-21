@@ -7,9 +7,7 @@ var PER_PAGE = 50;
 module.exports = function ( endpoint, filters ) {
   var data = [];
 
-  var sunlight = sunlightApi();
-
-  var firstCall = sunlight[endpoint]().filter( 'per_page', PER_PAGE );
+  var firstCall = sunlightApi[endpoint]().filter( 'per_page', PER_PAGE );
 
   Object.keys( filters ).forEach( function ( key ) {
     firstCall = firstCall.filter( key, filters[key] );
@@ -24,7 +22,7 @@ module.exports = function ( endpoint, filters ) {
 
     var page = 2;
     while ( count < d.count ) {
-      promises.push( sunlight.clone( firstCall ).filter( 'page', page ) );
+      promises.push( sunlightApi.clone( firstCall ).filter( 'page', page ) );
       page += 1;
       count += PER_PAGE;
     }

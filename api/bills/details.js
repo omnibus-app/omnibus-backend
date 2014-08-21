@@ -6,7 +6,7 @@ var timesApi = require( '../../modules/times-api' );
 
 module.exports = function ( id ) {
   var bill = parseBill( id );
-  return timesApi().billDetails({
+  return timesApi.billDetails({
     billId: bill.nytId,
     congressNumber: bill.congressNumber
   });
