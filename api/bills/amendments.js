@@ -4,9 +4,9 @@ var TimesApi = require( 'nyt-congress-node' );
 var NYT = process.env.NYT_CONGRESS_KEY || 'test';
 var timesApi = new TimesApi( NYT );
 
-module.exports = function ( req ) {
+module.exports = function ( id ) {
 
-  var id = req.params.id.split( '-' );
+  id = id.split( '-' );
   var congressNumber = id[0];
   var billNumber = id[1];
 
