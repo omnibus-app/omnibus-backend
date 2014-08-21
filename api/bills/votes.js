@@ -1,15 +1,15 @@
 'use strict';
 var Promise = require( 'bluebird' );
 
-var parseBill = require( '../../../modules/parse-bill-id' );
-var sunlightAll = require( '../../sunlight-all' );
+var config = require( '../../modules/config' );
+var parseBill = require( '../../modules/parse-bill-id' );
+var sunlightAll = require( '../../modules/sunlight-all' );
 
-var TimesApi = require( 'nyt-congress-node' );
-var NYT = process.env.NYT_CONGRESS_KEY || 'test';
-var timesApi = new TimesApi( NYT );
+var nytKey =
+  config.get( 'NYT_CONGRESS_KEY' ) ||
+  process.env.NYT_CONGRESS_KEY;
 
-
-// helper functions
+var timesApi = new require( 'nyt-congress-node' )( nytKey );
 
 function parseMonth ( num ) {
   var result = String( num + 1 );
@@ -87,9 +87,52 @@ function combineVotes ( sunlightVotes, nytVotes ) {
   });
 }
 
+function staggeredVoteMonthRequests ( voteMonths ) {
+  var len = voteMonths.length;
+  var data = [];
 
-module.exports = function( req ) {
-  var bill = parseBill( req.params.id );
+  return new Promise( function ( resolve, reject ) {
+
+    function handleResponse ( resp ) {
+      data.push( resp );
+      if ( data.length === len ) {
+        resolve( data );
+      }
+    }
+
+    function makeTwoRequests () {
+
+      var first = voteMonths.pop();
+      var second = voteMonths.pop();
+
+      timesApi.votesByDate({
+        chamber: 'house',
+        year: first.split( '-' )[0],
+        month: first.split( '-' )[1]
+      }).then( handleResponse )
+      .catch( reject );
+
+      if ( second ) {
+        timesApi.votesByDate({
+          chamber: 'house',
+          year: second.split( '-' )[0],
+          month: second.split( '-' )[1]
+        }).then( handleResponse )
+        .catch( reject );
+      }
+
+      if ( voteMonths.length ) {
+        setTimeout( makeTwoRequests, 1050 );
+      }
+    }
+
+    makeTwoRequests();
+
+  });
+}
+
+module.exports = function( id ) {
+  var bill = parseBill( id );
   var filters = {
     'bill_id': bill.sunlightId
   };
@@ -109,17 +152,9 @@ module.exports = function( req ) {
       return acc;
     }, {} );
 
-    return Promise.all( Object.keys( voteMonths ).map( function ( yearMonth ) {
-      var year = yearMonth.split( '-' )[0];
-      var month = yearMonth.split( '-' )[1];
-      return timesApi.votesByDate({
-        chamber: 'house',
-        year: year,
-        month: month
-      });
-    }))
+    return staggeredVoteMonthRequests( Object.keys( voteMonths ) )
     .then( function ( responses ) {
-      var nytVotes = responses.reduce( function ( acc, response ) {
+      var nytVotes = responses.reduce( function ( acc, response, i ) {
         return acc.concat( JSON.parse( response ).results.votes );
       }, [] );
       return combineVotes( sunlightVotes, nytVotes );

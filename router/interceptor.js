@@ -6,8 +6,6 @@ var redisConfig = {
   key: process.env.REDIS_KEY || null
 };
 
-console.log( redisConfig );
-
 var client, get, set;
 
 var interpolateParams = require( '../modules/interpolate-params' );
@@ -33,29 +31,6 @@ function saveToCache ( key, value ) {
   return value;
 }
 
-var cacheInterceptor = function ( req, fallback ) {
-  var path = interpolateParams( req.path, req.params );
-
-  if ( !client || req.query.force ) {
-    return fallback( req ).then( function( response ) {
-      return saveToCache( path, response );
-    });
-  }
-
-  return tryCache( path )
-    // found in cache
-    .then( function ( response ) {
-      response = typeof response === 'string' ? JSON.parse( response ) : response;
-      return response;
-    })
-    // not in cache
-    .catch( function () {
-      return fallback( req ).then( function ( response ) {
-        return saveToCache( path, response );
-      });
-    });
-};
-
 var tryCache = function ( key ) {
   return get( key ).then( function ( response ) {
     return new Promise( function ( resolve, reject ) {
@@ -66,6 +41,42 @@ var tryCache = function ( key ) {
       }
     });
   });
+};
+
+var cacheInterceptor = function ( req, fallback, args ) {
+  var path = interpolateParams( req.path, req.params );
+
+  if ( !Array.isArray( args ) ) {
+    args = [ args ];
+  }
+
+  if ( args == null ) {
+    args = [];
+  }
+
+  if ( !client || req.query.force ) {
+    return fallback.apply( null, args ).then( function( response ) {
+      if ( client ) {
+        saveToCache( path, response );
+      }
+      return response;
+    });
+  }
+
+  return tryCache( path )
+    // found in cache
+    .then( function ( response ) {
+      response = typeof response === 'string' ?
+        JSON.parse( response ) :
+        response;
+      return response;
+    })
+    // not in cache
+    .catch( function () {
+      return fallback.apply( null, args ).then( function ( response ) {
+        return saveToCache( path, response );
+      });
+    });
 };
 
 module.exports = cacheInterceptor;

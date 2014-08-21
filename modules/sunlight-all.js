@@ -1,11 +1,15 @@
 'use strict';
 
 var Promise = require( 'bluebird' );
-var TimesApi = require( 'nyt-congress-node' );
+
+var config = require( './config' );
 var sunlightApi = require( 'sunlight-congress-api' );
 
-var SUNLIGHT = process.env.SUNLIGHT_CONGRESS_KEY || 'test';
-sunlightApi.init( SUNLIGHT );
+var sunlightKey =
+  config.get( 'SUNLIGHT_CONGRESS_KEY' ) ||
+  process.env.SUNLIGHT_CONGRESS_KEY;
+
+sunlightApi.init( sunlightKey );
 
 // var NYT = process.env.NYT_CONGRESS_KEY || 'test';
 // var timesApi = new TimesApi( NYT );
