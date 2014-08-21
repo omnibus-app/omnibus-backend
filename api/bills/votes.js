@@ -1,15 +1,9 @@
 'use strict';
-var Promise = require( 'bluebird' );
 
-var config = require( '../../modules/config' );
+var Promise = require( 'bluebird' );
 var parseBill = require( '../../modules/parse-bill-id' );
 var sunlightAll = require( '../../modules/sunlight-all' );
-
-var nytKey =
-  process.env.NYT_CONGRESS_KEY ||
-  config.get('NYT_CONGRESS_KEY');
-
-var timesApi = new require( 'nyt-congress-node' )( nytKey );
+var timesApi = require( '../../modules/times-api' );
 
 function parseMonth ( num ) {
   var result = String( num + 1 );
@@ -155,7 +149,7 @@ module.exports = function( id ) {
     return staggeredVoteMonthRequests( Object.keys( voteMonths ) )
     .then( function ( responses ) {
       var nytVotes = responses.reduce( function ( acc, response, i ) {
-        return acc.concat( JSON.parse( response ).results.votes );
+        return acc.concat( response.results.votes );
       }, [] );
       return combineVotes( sunlightVotes, nytVotes );
     });

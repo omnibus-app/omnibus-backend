@@ -1,15 +1,7 @@
 'use strict';
 
 var parseBill = require( '../../modules/parse-bill-id' );
-var config = require( '../../modules/config' );
-
-var sunlightApi = require( 'sunlight-congress-api' );
-
-var sunlightKey =
-  process.env.SUNLIGHT_CONGRESS_KEY ||
-  config.get('SUNLIGHT_CONGRESS_KEY');
-
-sunlightApi.init( sunlightKey );
+var sunlightApi = require( '../../modules/sunlight-api' );
 
 module.exports = function ( query ) {
   return sunlightApi

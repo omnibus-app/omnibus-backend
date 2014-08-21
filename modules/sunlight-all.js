@@ -1,19 +1,7 @@
 'use strict';
 
+var sunlightApi = require( './sunlight-api' );
 var Promise = require( 'bluebird' );
-
-var config = require( './config' );
-var sunlightApi = require( 'sunlight-congress-api' );
-
-var sunlightKey =
-  process.env.SUNLIGHT_CONGRESS_KEY ||
-  config.get( 'SUNLIGHT_CONGRESS_KEY' );
-
-sunlightApi.init( sunlightKey );
-
-// var NYT = process.env.NYT_CONGRESS_KEY || 'test';
-// var timesApi = new TimesApi( NYT );
-
 var PER_PAGE = 50;
 
 module.exports = function ( endpoint, filters ) {

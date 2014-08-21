@@ -19,7 +19,7 @@ module.exports = ( function () {
       return;
     }
 
-    // help us avoid using this to pass around data
+    // prevent using this to pass around data
     if ( typeof val === 'object' ) {
       throw new TypeError( 'Configuration only accepts primitive values' );
     }

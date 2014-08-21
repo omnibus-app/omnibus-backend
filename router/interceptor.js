@@ -45,7 +45,6 @@ var tryCache = function ( key ) {
 
 var cacheInterceptor = function ( req, fallback, args ) {
   var path = interpolateParams( req.path, req.params );
-
   if ( !Array.isArray( args ) ) {
     args = [ args ];
   }

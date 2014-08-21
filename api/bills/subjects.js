@@ -2,16 +2,12 @@
 
 var parseBill = require( '../../modules/parse-bill-id' );
 var config = require( '../../modules/config' );
-var nytKey =
-  process.env.NYT_CONGRESS_KEY ||
-  config.get('NYT_CONGRESS_KEY');
-
-var timesApi = new require( 'nyt-congress-node' )( nytKey );
+var timesApi = require( '../../modules/times-api' );
 
 module.exports = function ( id ) {
   var bill = parseBill( id );
   return timesApi.billSubjects({
-    billId: bill.billNumber,
+    billId: bill.nytId,
     congressNumber: bill.congressNumber
   });
 };
