@@ -11,14 +11,14 @@ function addRoutesTo ( router ) {
     });
   });
 
-  router.get( '/bills/:id/versions', function ( req, res ) {
-    cacheInterceptor( req, bills.versions, req.params.id ).then( function ( data ) {
+  router.get( '/bills/:id', function ( req, res ) {
+    cacheInterceptor( req, bills.details, req.params.id ).then( function ( data ) {
       res.json( data );
     });
   });
 
-  router.get( '/bills/:id', function ( req, res ) {
-    cacheInterceptor( req, bills.details, req.params.id ).then( function ( data ) {
+  router.get( '/bills/:id/versions', function ( req, res ) {
+    cacheInterceptor( req, bills.versions, req.params.id ).then( function ( data ) {
       res.json( data );
     });
   });

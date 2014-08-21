@@ -8,6 +8,7 @@ function Bill ( id ) {
   this.congressNumber = _id[0];
   this.billNumber = _id[1].split( '' ).filter( isNumber ).join( '' );
   this.billType = _id[1].split( '' ).filter( isLetter ).join( '' ).toLowerCase();
+  this.nytId = this.billType + this.billNumber;
   this.sunlightId = _id[1] + '-' + _id[0];
 }
 
