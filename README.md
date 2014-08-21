@@ -10,8 +10,22 @@
 ### Deploying as a web service
 Omnibus includes a deployable [Express]() application. The app exposes an HTTP interface that mirrors the JavaScript API.
 
+```sh
+git clone https://github.com/omnibus-app/omnibus
+cd omnibus && node ./bin/www 
+```
+
 ### Using as a module
 Omnibus exposes a JavaSCript API; simply `require()` the module.
 
+```js
+var omnibus = require( 'omnibus' );
+omnibus.bills( '113-HR2397' ).versions().then( /* etc */ );
+```
+
 ### Using as a router
 Finally, Omnibus provides access to its application router. This allows an existing Express application to incorporate the HTTP interface with a simple one-liner.
+
+```js
+app.use( '/omnibus/', require( 'omnibus' ).router );
+```
