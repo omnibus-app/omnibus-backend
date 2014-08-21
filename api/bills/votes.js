@@ -1,8 +1,8 @@
 'use strict';
 var Promise = require( 'bluebird' );
 
-var parseBill = require( '../../../modules/parse-bill-id' );
-var sunlightAll = require( '../../sunlight-all' );
+var parseBill = require( '../../modules/parse-bill-id' );
+var sunlightAll = require( '../../modules/sunlight-all' );
 
 var TimesApi = require( 'nyt-congress-node' );
 var NYT = process.env.NYT_CONGRESS_KEY || 'test';

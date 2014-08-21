@@ -9,10 +9,10 @@
 var api = {};
 
 var billMixin = ( function () {
-  var _methods = require( './bill' );
-  var methods = Object.keys( methods ).reduce( function ( acc, key ) {
+  var _methods = require( './bills' );
+  var methods = Object.keys( _methods ).reduce( function ( acc, key ) {
     acc[key] = function () {
-      return methods[key].call( null, this.id );
+      return _methods[key]( this.id );
     };
     return acc;
   }, {} );

@@ -1,8 +1,8 @@
 module.exports = {
   amendments: require( './amendments' ),
-  details: require( './deatils' ),
+  details: require( './details' ),
   search: require( './search' ),
   subjects: require( './subjects' ),
-  versions: require( './verions' ),
+  versions: require( './versions' ),
   votes: require( './votes' )
 };
