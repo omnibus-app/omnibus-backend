@@ -3,8 +3,12 @@
 var config = require( '../../modules/config' )
 
 var TimesApi = require( 'nyt-congress-node' );
-var NYT = config.get('NYT_CONGRESS_KEY') || process.env.NYT_CONGRESS_KEY || 'test';
-var timesApi = new TimesApi( NYT );
+
+var nytKey =
+  config.get('NYT_CONGRESS_KEY') ||
+  process.env.NYT_CONGRESS_KEY;
+
+var timesApi = new TimesApi( nytKey );
 
 module.exports = function ( id ) {
 

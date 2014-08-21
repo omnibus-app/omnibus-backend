@@ -8,10 +8,12 @@ var cookieParser = require( 'cookie-parser' );
 var bodyParser = require( 'body-parser' );
 var cors = require( 'cors' );
 
-var api = {
-  bills: require( '../routes/bills' ),
-  congress: require( '../routes/congress' )
-};
+// var api = {
+//   bills: require( '../routes/bills' ),
+//   congress: require( '../routes/congress' )
+// };
+
+var apiRouter = require( '../routes/router' );
 
 var app = express();
 
@@ -29,9 +31,11 @@ app.use( cookieParser() );
 app.use( express.static( path.join( __dirname, 'public' ) ));
 
 // add routing for each resource defined in our api
-Object.keys( api ).forEach( function ( resource ) {
-  app.use( '/api/' + resource, api[resource] );
-});
+// Object.keys( api ).forEach( function ( resource ) {
+//   app.use( '/api/' + resource, api[resource] );
+// });
+
+app.use( '/api/', apiRouter );
 
 /// catch 404 and forwarding to error handler
 app.use( function ( req, res, next ) {

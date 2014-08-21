@@ -31,6 +31,12 @@ var billMixin = ( function () {
 
 })();
 
-module.exports = function ( id ) {
+function makeBill ( id ) {
   return billMixin({ id: id });
-};
+}
+
+Object.keys( endpoints ).forEach( function ( method ) {
+  makeBill[method] = endpoints[method];
+});
+
+module.exports = makeBill;

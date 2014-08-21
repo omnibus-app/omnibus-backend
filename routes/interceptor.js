@@ -6,8 +6,6 @@ var redisConfig = {
   key: process.env.REDIS_KEY || null
 };
 
-console.log( redisConfig );
-
 var client, get, set;
 
 var interpolateParams = require( '../modules/interpolate-params' );
@@ -33,11 +31,21 @@ function saveToCache ( key, value ) {
   return value;
 }
 
-var cacheInterceptor = function ( req, fallback ) {
+var cacheInterceptor = function ( req, fallback, args ) {
   var path = interpolateParams( req.path, req.params );
 
+  if ( !Array.isArray( args ) ) {
+    args = [ args ];
+  }
+
+  if ( args == null ) {
+    args = [];
+  }
+
+  console.log( args );
+
   if ( !client || req.query.force ) {
-    return fallback( req ).then( function( response ) {
+    return fallback.apply( null, args ).then( function( response ) {
       return saveToCache( path, response );
     });
   }
@@ -50,7 +58,7 @@ var cacheInterceptor = function ( req, fallback ) {
     })
     // not in cache
     .catch( function () {
-      return fallback( req ).then( function ( response ) {
+      return fallback.apply( null, args ).then( function ( response ) {
         return saveToCache( path, response );
       });
     });
