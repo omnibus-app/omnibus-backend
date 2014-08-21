@@ -2,10 +2,13 @@
 
 module.exports = ( function () {
 
-  var config = {};
+  var config = {
+    NYT_CONGRESS_KEY: 'NOT_FOUND',
+    SUNLIGHT_CONGRESS_KEY: 'NOT_FOUND'
+  };
 
   function get ( key ) {
-    return config.key;
+    return config[key];
   }
 
   function set ( keyOrObj, val ) {

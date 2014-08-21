@@ -1,13 +1,17 @@
 'use strict';
 
 var parseBill = require( '../../modules/parse-bill-id' );
-var get = require( '../../modules/get' );
+var config = require( '../../modules/config' );
 
+var get = require( '../../modules/get' );
 var Promise = require( 'bluebird' );
 
 var sunlightApi = require( 'sunlight-congress-api' );
-var SUNLIGHT = process.env.SUNLIGHT_CONGRESS_KEY || 'test';
-sunlightApi.init( SUNLIGHT );
+var sunlightKey =
+  config.get( 'SUNLIGHT_CONGRESS_KEY' ) ||
+  process.env.SUNLIGHT_CONGRESS_KEY;
+
+sunlightApi.init( sunlightKey );
 
 var getVersion = function ( version ) {
   return get( version.urls.html );

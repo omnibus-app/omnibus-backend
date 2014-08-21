@@ -4,9 +4,11 @@ var parseBill = require( '../../modules/parse-bill-id' );
 var config = require( '../../modules/config' );
 
 var sunlightApi = require( 'sunlight-congress-api' );
+
 var sunlightKey =
-  config.get('SUNLIGHT_CONGRESS_KEY') ||
+  config.get( 'SUNLIGHT_CONGRESS_KEY' ) ||
   process.env.SUNLIGHT_CONGRESS_KEY;
+
 sunlightApi.init( sunlightKey );
 
 module.exports = function ( query ) {

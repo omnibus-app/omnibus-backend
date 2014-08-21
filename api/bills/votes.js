@@ -1,12 +1,15 @@
 'use strict';
 var Promise = require( 'bluebird' );
 
+var config = require( '../../modules/config' );
 var parseBill = require( '../../modules/parse-bill-id' );
 var sunlightAll = require( '../../modules/sunlight-all' );
 
-var TimesApi = require( 'nyt-congress-node' );
-var NYT = process.env.NYT_CONGRESS_KEY || 'test';
-var timesApi = new TimesApi( NYT );
+var nytKey =
+  config.get( 'NYT_CONGRESS_KEY' ) ||
+  process.env.NYT_CONGRESS_KEY;
+
+var timesApi = new require( 'nyt-congress-node' )( nytKey );
 
 function parseMonth ( num ) {
   var result = String( num + 1 );
