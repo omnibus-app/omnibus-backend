@@ -82,6 +82,7 @@ function combineVotes ( sunlightVotes, nytVotes ) {
 }
 
 function staggeredVoteMonthRequests ( voteMonths ) {
+  var times = timesApi();
   var len = voteMonths.length;
   var data = [];
 
@@ -95,11 +96,10 @@ function staggeredVoteMonthRequests ( voteMonths ) {
     }
 
     function makeTwoRequests () {
-
       var first = voteMonths.pop();
       var second = voteMonths.pop();
 
-      timesApi.votesByDate({
+      times.votesByDate({
         chamber: 'house',
         year: first.split( '-' )[0],
         month: first.split( '-' )[1]
@@ -107,7 +107,7 @@ function staggeredVoteMonthRequests ( voteMonths ) {
       .catch( reject );
 
       if ( second ) {
-        timesApi.votesByDate({
+        times.votesByDate({
           chamber: 'house',
           year: second.split( '-' )[0],
           month: second.split( '-' )[1]
