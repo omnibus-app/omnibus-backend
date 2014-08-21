@@ -5,5 +5,4 @@ module.exports = {
   congress: require( './congress' ),
   votes: require( './votes' ),
   config: require( '../modules/config' ),
-  router: require( '../router' )
 };
