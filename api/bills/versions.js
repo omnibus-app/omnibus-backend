@@ -14,7 +14,7 @@ module.exports = function( id ) {
   var bill = parseBill( id );
   var sunlightResp;
   var gpoResp;
-  return sunlightApi()
+  return sunlightApi
     .bills()
     .filter( 'bill_id', bill.sunlightId )
     .fields( 'versions' )

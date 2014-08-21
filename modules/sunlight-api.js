@@ -2,13 +2,10 @@
 
 var config = require( './config' );
 var sunlightApi = require( 'sunlight-congress-api' );
+var sunlightKey =
+  process.env.SUNLIGHT_CONGRESS_KEY ||
+  config.get( 'SUNLIGHT_CONGRESS_KEY' );
 
-module.exports = function () {
-  var sunlightKey =
-    process.env.SUNLIGHT_CONGRESS_KEY ||
-    config.get( 'SUNLIGHT_CONGRESS_KEY' );
+sunlightApi.init( sunlightKey );
 
-  sunlightApi.init( sunlightKey );
-
-  return sunlightApi;
-};
+module.exports = sunlightApi;
