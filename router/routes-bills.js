@@ -1,8 +1,8 @@
 'use strict';
 
 var express = require('express');
-var bills = require( '../../api' ).bills;
-var cacheInterceptor = require( '../interceptor.js' );
+var bills = require( '../api' ).bills;
+var cacheInterceptor = require( './interceptor.js' );
 
 function addRoutesTo ( router ) {
   router.get( '/bills/search', function ( req, res ) {

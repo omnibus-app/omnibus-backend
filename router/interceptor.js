@@ -31,6 +31,18 @@ function saveToCache ( key, value ) {
   return value;
 }
 
+var tryCache = function ( key ) {
+  return get( key ).then( function ( response ) {
+    return new Promise( function ( resolve, reject ) {
+      if ( response ) {
+        resolve( response );
+      } else {
+        reject();
+      }
+    });
+  });
+};
+
 var cacheInterceptor = function ( req, fallback, args ) {
   var path = interpolateParams( req.path, req.params );
 
@@ -42,18 +54,21 @@ var cacheInterceptor = function ( req, fallback, args ) {
     args = [];
   }
 
-  console.log( args );
-
   if ( !client || req.query.force ) {
     return fallback.apply( null, args ).then( function( response ) {
-      return saveToCache( path, response );
+      if ( client ) {
+        saveToCache( path, response );
+      }
+      return response;
     });
   }
 
   return tryCache( path )
     // found in cache
     .then( function ( response ) {
-      response = typeof response === 'string' ? JSON.parse( response ) : response;
+      response = typeof response === 'string' ?
+        JSON.parse( response ) :
+        response;
       return response;
     })
     // not in cache
@@ -62,18 +77,6 @@ var cacheInterceptor = function ( req, fallback, args ) {
         return saveToCache( path, response );
       });
     });
-};
-
-var tryCache = function ( key ) {
-  return get( key ).then( function ( response ) {
-    return new Promise( function ( resolve, reject ) {
-      if ( response ) {
-        resolve( response );
-      } else {
-        reject();
-      }
-    });
-  });
 };
 
 module.exports = cacheInterceptor;

@@ -1,5 +1,8 @@
 'use strict';
 
+var makeEndpointMethods = require( '../make-endpoint-methods' );
+var makeMethodMixin = require( '../make-method-mixin' );
+
 var endpoints = {
   amendments: require( './amendments' ),
   details: require( './details' ),
@@ -9,32 +12,20 @@ var endpoints = {
   votes: require( './votes' )
 };
 
-var billMixin = ( function () {
-  var methods = Object.keys( endpoints ).reduce( function ( acc, key ) {
-    acc[key] = function () {
-      return endpoints[key]( this.id );
-    };
-    return acc;
-  }, {} );
+var billMethods = makeEndpointMethods( endpoints );
 
-  // special case.
-  methods.search = function ( query ) {
-    return endpoints.search( query );
-  };
+// special case
+billMethods.search = function ( query ) {
+  return endpoints.search( query );
+};
 
-  return function ( obj ) {
-    Object.keys( methods ).forEach( function ( key ) {
-      obj[key] = methods[key];
-    });
-    return obj;
-  };
+var billMixin = makeMethodMixin( billMethods );
 
-})();
-
-function makeBill ( id ) {
+var makeBill = function ( id ) {
   return billMixin({ id: id });
-}
+};
 
+// attach methods so that they can be accessed directly
 Object.keys( endpoints ).forEach( function ( method ) {
   makeBill[method] = endpoints[method];
 });

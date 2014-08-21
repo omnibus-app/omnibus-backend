@@ -1,26 +1,24 @@
 'use strict';
 
+var makeEndpointMethods = require( '../make-endpoint-methods' );
+var makeMethodMixin = require( '../make-method-mixin' );
+
 var endpoints = {
   month: require( './month' )
 };
 
-var votesMixin = ( function () {
-  var methods = Object.keys( endpoints ).reduce( function ( acc, key ) {
-    acc[key] = function () {
-      return endpoints[key]( this.id );
-    };
-    return acc;
-  }, {} );
+var votesMethods = makeEndpointMethods( endpoints );
+var votesMixin = makeMethodMixin( votesMethods );
 
-  return function ( obj ) {
-    Object.keys( methods ).forEach( function ( key ) {
-      obj[key] = methods[key];
-    });
-    return obj;
-  };
-
-})();
-
-module.exports = function ( id ) {
+var makeVotes = function ( id ) {
   return votesMixin({ id: id });
 };
+
+// attach methods so that they can be accessed directly
+Object.keys( endpoints ).forEach( function ( method ) {
+  makeVotes[method] = endpoints[method];
+});
+
+module.exports = makeVotes;
+
+

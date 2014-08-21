@@ -1,23 +1,19 @@
 'use strict';
 
-var TimesApi = require( 'nyt-congress-node' );
 var config = require( '../../modules/config' );
-
+var parseBill = require( '../../modules/parse-bill-id' );
 var nytKey =
   config.get('NYT_CONGRESS_KEY') ||
   process.env.NYT_CONGRESS_KEY;
 
+var TimesApi = require( 'nyt-congress-node' );
 var timesApi = new TimesApi( nytKey );
 
 module.exports = function ( id ) {
-
-  id = id.split( '-' );
-  var congressNumber = id[0];
-  var billNumber = id[1];
-
+  var bill = parseBill( id );
   return timesApi.billDetails({
-    billId: billNumber,
-    congressNumber: congressNumber
+    billId: bill.billNumber,
+    congressNumber: bill.congressNumber
   });
 
 };

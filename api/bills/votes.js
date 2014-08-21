@@ -84,6 +84,49 @@ function combineVotes ( sunlightVotes, nytVotes ) {
   });
 }
 
+function staggeredVoteMonthRequests ( voteMonths ) {
+  var len = voteMonths.length;
+  var data = [];
+
+  return new Promise( function ( resolve, reject ) {
+
+    function handleResponse ( resp ) {
+      data.push( resp );
+      if ( data.length === len ) {
+        resolve( data );
+      }
+    }
+
+    function makeTwoRequests () {
+
+      var first = voteMonths.pop();
+      var second = voteMonths.pop();
+
+      timesApi.votesByDate({
+        chamber: 'house',
+        year: first.split( '-' )[0],
+        month: first.split( '-' )[1]
+      }).then( handleResponse )
+      .catch( reject );
+
+      if ( second ) {
+        timesApi.votesByDate({
+          chamber: 'house',
+          year: second.split( '-' )[0],
+          month: second.split( '-' )[1]
+        }).then( handleResponse )
+        .catch( reject );
+      }
+
+      if ( voteMonths.length ) {
+        setTimeout( makeTwoRequests, 1050 );
+      }
+    }
+
+    makeTwoRequests();
+
+  });
+}
 
 module.exports = function( id ) {
   var bill = parseBill( id );
@@ -106,17 +149,9 @@ module.exports = function( id ) {
       return acc;
     }, {} );
 
-    return Promise.all( Object.keys( voteMonths ).map( function ( yearMonth ) {
-      var year = yearMonth.split( '-' )[0];
-      var month = yearMonth.split( '-' )[1];
-      return timesApi.votesByDate({
-        chamber: 'house',
-        year: year,
-        month: month
-      });
-    }))
+    return staggeredVoteMonthRequests( Object.keys( voteMonths ) )
     .then( function ( responses ) {
-      var nytVotes = responses.reduce( function ( acc, response ) {
+      var nytVotes = responses.reduce( function ( acc, response, i ) {
         return acc.concat( JSON.parse( response ).results.votes );
       }, [] );
       return combineVotes( sunlightVotes, nytVotes );
