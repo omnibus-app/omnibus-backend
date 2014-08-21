@@ -3,11 +3,8 @@
 var sunlightAll = require( '../../modules/sunlight-all' );
 
 module.exports = function ( id ) {
-
-  var filters = {
+  return sunlightAll( 'bills', {
     'congress': id,
     'history.enacted': true
-  };
-
-  return sunlightAll( 'bills', filters );
+  });
 };

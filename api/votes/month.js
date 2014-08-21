@@ -1,8 +1,12 @@
 'use strict';
 
-var TimesApi = require( 'nyt-congress-node' );
-var NYT = process.env.NYT_CONGRESS_KEY || 'test';
-var timesApi = new TimesApi( NYT );
+var config = require( '../../modules/config' );
+
+var nytKey =
+  process.env.NYT_CONGRESS_KEY ||
+  config.get('NYT_CONGRESS_KEY');
+
+var timesApi = new require( 'nyt-congress-node' )( nytKey );
 
 module.exports = function ( id ) {
   var year = id.split( '-' )[0];
