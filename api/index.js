@@ -3,5 +3,6 @@
 module.exports = {
   bills: require( './bills' ),
   congress: require( './congress' ),
-  votes: require( './votes' )
+  votes: require( './votes' ),
+  config: require( '../modules/config' ),
 };
