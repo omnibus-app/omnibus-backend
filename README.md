@@ -3,6 +3,8 @@
 [![Build Status](https://img.shields.io/travis/omnibus-app/omnibus-backend.svg?style=flat)](https://travis-ci.org/omnibus-app/omnibus-backend)
 [![Coverage Status](https://img.shields.io/coveralls/omnibus-app/omnibus-backend.svg?style=flat)](https://coveralls.io/r/omnibus-app/omnibus-backend)
 
+[![NPM](https://nodei.co/npm/omnibus.png?compact=true)](https://nodei.co/npm/omnibus/)
+
 > Omnibus is a hybrid web service/node module that provides a clean API for accessing data on activities of the US Congress.
 
 - <a href='#using-omnibus'>Using Omnibus</a>
