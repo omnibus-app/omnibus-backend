@@ -99,12 +99,14 @@ function staggeredVoteMonthRequests ( voteMonths ) {
       var first = voteMonths.pop();
       var second = voteMonths.pop();
 
-      times.votesByDate({
-        chamber: 'house',
-        year: first.split( '-' )[0],
-        month: first.split( '-' )[1]
-      }).then( handleResponse )
-      .catch( reject );
+      if ( first ) {
+        times.votesByDate({
+          chamber: 'house',
+          year: first.split( '-' )[0],
+          month: first.split( '-' )[1]
+        }).then( handleResponse )
+        .catch( reject );
+      }
 
       if ( second ) {
         times.votesByDate({
@@ -120,7 +122,11 @@ function staggeredVoteMonthRequests ( voteMonths ) {
       }
     }
 
-    makeTwoRequests();
+    if ( voteMonths.length ) {
+      makeTwoRequests();
+    } else {
+      resolve();
+    }
 
   });
 }
@@ -145,6 +151,10 @@ module.exports = function( id ) {
       }
       return acc;
     }, {} );
+
+    if ( voteMonths.length === 0 ) {
+      return [];
+    }
 
     return staggeredVoteMonthRequests( Object.keys( voteMonths ) )
     .then( function ( responses ) {
