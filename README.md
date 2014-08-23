@@ -73,6 +73,19 @@ omnibus.bills().search('searchString');
 
 All JS examples assume that Omnibus is available as `var omnibus = require( 'omnibus' )`. All methods return promises - Omnibus uses [Bluebird]() interally. The REST endpoints assume that the router is serving at `/api`. 
 
+
+## Configuration
+Omnibus uses the [New York Times Congress API](http://developer.nytimes.com/docs/read/congress_api) and the [Sunlight Congress API](https://sunlightlabs.github.io/congress/), which require API keys. You'll need to get keys and configure Omnibus with them before use.
+
+When deploying as a web service you should make them available under `process.env.NYT_CONGRESS_KEY` and `process.env.SUNLIGHT_CONGRESS_KEY` respectively. When using the JavaScript API directly, you can set configuration parameters like so:
+
+```js
+omnibus.config.set({
+  'NYT_CONGRESS_KEY': 'your_nyt_key',
+  'SUNLIGHT_CONGRESS_KEY': 'your_sunlight_key'
+})
+```
+
 ### Bills API
 The bills API supports methods/endpoints for amendments, general info, text search, subjects, versions, and votes.
 
@@ -168,16 +181,4 @@ omnibus.votes(id).month()
 HTTP
 ```
 /api/votes/:id
-```
-
-## Configuration
-Omnibus uses the [New York Times Congress API](http://developer.nytimes.com/docs/read/congress_api) and the [Sunlight Congress API](https://sunlightlabs.github.io/congress/), which require API keys. You'll need to get keys and configure Omnibus with them before use.
-
-When deploying as a web service you should make them available under `process.env.NYT_CONGRESS_KEY` and `process.env.SUNLIGHT_CONGRESS_KEY` respectively. When using the JavaScript API directly, you can set configuration parameters like so:
-
-```js
-omnibus.config.set({
-  'NYT_CONGRESS_KEY': 'your_nyt_key',
-  'SUNLIGHT_CONGRESS_KEY': 'your_sunlight_key'
-})
 ```
