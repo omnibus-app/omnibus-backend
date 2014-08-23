@@ -152,7 +152,7 @@ module.exports = function( id ) {
       return acc;
     }, {} );
 
-    if ( voteMonths.length === 0 ) {
+    if ( Object.keys( voteMonths ).length === 0 ) {
       return [];
     }
 
