@@ -25,7 +25,8 @@ Omnibus includes a deployable [Express](expressjs.com) application. The app expo
 
 ```sh
 git clone https://github.com/omnibus-app/omnibus
-cd omnibus && node ./bin/www 
+cd omnibus && node ./bin/www
+curl -X GET localhost:3000/api/bills/113-hr2397
 ```
 
 The web service includes optional support for a Redis cache that can be used to dramatically speed up the response time of repeated requests.
