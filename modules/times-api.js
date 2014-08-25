@@ -8,6 +8,7 @@ module.exports = function () {
   var nytKey =
     process.env.NYT_CONGRESS_KEY ||
     config.get('NYT_CONGRESS_KEY');
+
   return new NYTCongress( nytKey );
 
 };

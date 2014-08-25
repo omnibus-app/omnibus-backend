@@ -48,4 +48,11 @@ app.use( function ( err, req, res, next ) {
   res.json( err.status );
 });
 
+app.launch = function ( port ) {
+  this.set('port', process.env.PORT || port || 3000);
+  var server = this.listen( this.get('port'), function() {
+    console.log( 'Express server listening on port ' + server.address().port );
+  });
+};
+
 module.exports = app;
