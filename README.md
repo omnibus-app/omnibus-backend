@@ -21,8 +21,13 @@
 Omnibus is extremely versatile. It can be run as a standalone web service, incorporated as router into another Express app, or required as a node module and used through it's API directly. It can even run in the browser. Omnibus is in active development. If you'd like to see a specific endpoint added, open an issue, or better yet, a pull request. 
 
 ### Deploying as a web service
-Omnibus includes a deployable [Express](expressjs.com) application. The app exposes an HTTP interface that mirrors the JavaScript API.
+Omnibus includes a deployable [Express](expressjs.com) application. The app exposes an HTTP interface that mirrors the JavaScript API. You can deploy the full application with a single line of JS (as long as you have a couple environment variables set up, as detailed below in <a href="#configuration">configuration).
 
+```js
+require( 'omnibus/app' ).launch();
+```
+
+Alternately, you can clone the repo and start it from the command line.
 ```sh
 git clone https://github.com/omnibus-app/omnibus
 cd omnibus && npm start
