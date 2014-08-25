@@ -29,7 +29,7 @@ require( 'omnibus/app' ).launch();
 
 Alternately, you can clone the repo and start it from the command line.
 ```sh
-git clone https://github.com/omnibus-app/omnibus
+git clone https://github.com/omnibus-app/omnibus-backend
 cd omnibus && npm start
 curl -X GET localhost:3000/api/bills/113-hr2397
 ```
