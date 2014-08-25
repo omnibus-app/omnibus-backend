@@ -36,6 +36,13 @@ curl -X GET localhost:3000/api/bills/113-hr2397
 
 The web service includes optional support for a Redis cache that can be used to dramatically speed up the response time of repeated requests.
 
+### Using as an Express router
+Omnibus provides direct access to its application router. This allows an existing Express application to incorporate the HTTP interface.
+
+```js
+app.use( '/omnibus/', require( 'omnibus/router' ) );
+```
+
 ### Requiring as a Node module
 Omnibus exposes a JavaScript API; simply `require()` the module.
 
@@ -45,13 +52,6 @@ omnibus.bills( '113-HR2397' ).versions().then( /* etc */ );
 ```
 
 We haven't tested it in the browser extensively but it seems to work great with [Browserify](http://browserify.org/). Yep, it's both a deployable web service and a client-side library.
-
-### Using as an Express router
-Finally, Omnibus provides access to its application router. This allows an existing Express application to incorporate the HTTP interface.
-
-```js
-app.use( '/omnibus/', require( 'omnibus/router' ) );
-```
 
 ## API
 Omnibus was initially developed as a RESTful web service. A typical URL might look like this
