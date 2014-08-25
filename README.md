@@ -9,8 +9,8 @@
 
 - <a href='#using-omnibus'>Using Omnibus</a>
   - <a href="#deploying-as-a-web-service">Deploying as a web service</a>
-  - <a href="#requiring-as-a-node-module">Requiring as a Node module</a>
   - <a href="#using-as-an-express-router">Using as an Express router</a>
+  - <a href="#requiring-as-a-node-module">Requiring as a Node module</a>
 - <a href="#api">API</a>
   - <a href="#bills-api">Bills API</a>
   - <a href="#congress-api">Congress API</a>
