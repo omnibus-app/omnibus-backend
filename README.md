@@ -51,7 +51,7 @@ var omnibus = require( 'omnibus' );
 omnibus.bills( '113-HR2397' ).versions().then( /* etc */ );
 ```
 
-We haven't tested it in the browser extensively but it seems to work great with [Browserify](http://browserify.org/). Yep, it's both a deployable web service and a client-side library.
+It also works in the browser with [Browserify](http://browserify.org/). Yep, it's both a deployable web service and a client-side library.
 
 ## API
 Omnibus was initially developed as a RESTful web service. A typical URL might look like this
@@ -73,7 +73,7 @@ omnibus.bills(id).version();
 bills/search?q='searchString'
 
 // jS
-omnibus.bills().search('searchString');
+omnibus.bills().search({q: 'searchString'});
 ```
 
 All JS examples assume that Omnibus is available as `var omnibus = require( 'omnibus' )`. All methods return promises - Omnibus uses [Bluebird]() interally. The REST endpoints assume that the router is serving at `/api`. 
@@ -119,7 +119,7 @@ HTTP
 #### Search
 JavaScript
 ```js
-omnibus.bills().search('obamacare');
+omnibus.bills().search({q: 'obamacare'});
 ```
 
 HTTP
