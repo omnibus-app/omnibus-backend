@@ -70,7 +70,7 @@ bills/:id/version
 omnibus.bills(id).version();
 
 // REST endpoint
-bills/search?q='searchString'
+bills/search?q=searchString
 
 // jS
 omnibus.bills().search({q: 'searchString'});
